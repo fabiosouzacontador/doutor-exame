@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado - Doutor Exame</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body { background: #f8f9fa; }
+        .logo-header { display: flex; align-items: center; gap: 10px; }
+        .card { border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-9">
+                <div class="text-center mb-4">
+                    <div class="logo-header justify-content-center">
+                        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" width="60">
+                        <h2>Doutor Exame</h2>
+                    </div>
+                    <h4 class="text-primary mt-2">Resultado da Análise</h4>
+                </div>
+
+                <div class="alert alert-info mb-4">
+                    <h5>📌 Pré-Diagnóstico</h5>
+                    <p>{{ diagnostico }}</p>
+                </div>
+
+                <h4>Exames Analisados</h4>
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Exame</th>
+                            <th>Valor</th>
+                            <th>Referência</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in resultados %}
+                        <tr class="{% if r.status == 'alto' %}table-danger{% elif r.status == 'baixo' %}table-warning{% else %}table-success{% endif %}">
+                            <td>{{ r.exame }}</td>
+                            <td>{{ r.valor }} {{ r.unidade }}</td>
+                            <td>{{ r.min }} – {{ r.max }} {{ r.unidade }}</td>
+                            <td>
+                                {% if r.status == 'normal' %}✅ Normal
+                                {% elif r.status == 'alto' %}🔴 Alto
+                                {% else %}🟡 Baixo{% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="text-center mt-4">
+                    <a href="/" class="btn btn-outline-secondary">Analisar Novos Exames</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
